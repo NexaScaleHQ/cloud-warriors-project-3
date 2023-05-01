@@ -11,6 +11,12 @@ module.exports = async (app) => {
     app.use(cors());
     app.use(express.static(__dirname + '/public'))
 
+    // show result in terminal
+    app.use((req, res, next) => {
+        console.log(req)
+        next();
+    });
+
     // listen to events
     appEvents(app);
     //api
