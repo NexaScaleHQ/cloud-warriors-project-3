@@ -69,8 +69,9 @@ class CustomerRepository {
 
   async FindCustomerById({ id }) {
     try {
-      const existingCustomer = await CustomerModel.findById(id)
-        .populate("address")
+      const existingCustomer = await CustomerModel.findById(id).populate(
+        "address"
+      );
 
       return existingCustomer;
     } catch (err) {
@@ -98,16 +99,18 @@ class CustomerRepository {
     }
   }
 
-  async AddWishlistItem(customerId, { _id, name, description, price, available, banner }) {
-
+  async AddWishlistItem(
+    customerId,
+    { _id, name, description, price, available, banner }
+  ) {
     const product = {
       _id,
       name,
       description,
       price,
       available,
-      banner
-    }
+      banner,
+    };
 
     try {
       const profile = await CustomerModel.findById(customerId).populate(
@@ -151,9 +154,7 @@ class CustomerRepository {
 
   async AddCartItem(customerId, { _id, name, price, banner }, qty, isRemove) {
     try {
-      const profile = await CustomerModel.findById(customerId).populate(
-        "cart"
-      );
+      const profile = await CustomerModel.findById(customerId).populate("cart");
 
       if (profile) {
         const cartItem = {
@@ -166,7 +167,8 @@ class CustomerRepository {
         if (cartItems.length > 0) {
           let isExist = false;
           cartItems.map((item) => {
-            if (item.product._id.toString() === product._id.toString()) {
+            // if (item.product._id.toString() === product._id.toString()) {
+            if (item.product._id.toString() === _id.toString()) {
               if (isRemove) {
                 cartItems.splice(cartItems.indexOf(item), 1);
               } else {
