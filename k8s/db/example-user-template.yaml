@@ -1,0 +1,58 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name:  ns-user-template # change to microservice name in yours (ns-##)
+  labels:
+    name: ns-user-template-label # change to microservice label in yours
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  user-template-mongo # change to microservice name in yours
+  namespace: ns-user-template # must be same as ns-user-template template
+  labels:
+    name:  user-template-mongo #change
+spec:
+  replicas: 1 # specify the replica
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      name: user-template-mongo # change
+  template:
+    metadata:
+      labels:
+        name:  user-template-mongo # change
+    spec:
+      containers:
+      - image:  mongo # this is the standard mongo image, so no need to change this
+        name:  user-template-mongo # change to any other name
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "250Mi"
+          limits:
+            cpu: "1500m"
+            memory: "2500M"    
+        ports:
+        - containerPort:  27017 # standard port
+          name:  user-template-mongo # change
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name:  template-user-mongo-service
+  namespace: ns-user-template # namespace, same as ns-user-template created above
+spec:
+  selector:
+    name: user-template-mongo # user-template name
+  type: ClusterIP
+  ports:
+  - name:  user-template-mongo
+    port:  27020
+    targetPort:  27017
