@@ -1,0 +1,70 @@
+ apiVersion: apps/v1
+ kind: Deployment
+ metadata: 
+    name: shopping-mongo
+    namespace: ns-shopping
+    labels:
+      app: shopping-mongo
+  spec: 
+    replicas: 1
+    strategy:
+      rollingUpdate:
+       maxSurge: 1
+       maxUnavailable: 1
+      type: RollingUpdate
+    selector:
+     matchLabels:
+       app: shopping-mongo
+    template:
+      metadata:
+       labels: shopping
+         apps:
+      spec:
+       containers:
+      - name: shopping-mongo
+        image: mongo     
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "250Mi"
+          limits:
+            cpu: "1500m"
+            memory: "2500M"
+        ports:
+        - containerPort: 27017
+          name: shopping-mongo
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: shopping-mongo-service
+  namespace: ns-shopping
+spec:
+  selector:
+    app: shopping-mongo
+  type: ClusterIP
+  ports:
+   - name: shopping-mongo
+     port: 27017
+     targetPort: 27017
+
+---
+apiversion: v1
+kind: Namespace
+metadata:
+  name: ns-shopping
+  labels:
+    name: ns-shopping
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: shopping-mongo-secret
+  namespace: ns-shopping
+type: Opaque
+data:
+  MONGODB_ROOT_USERNAME: R29kSXNHcmVhdDE=
+  MONGODB_ROOT_PASSWORD: U2V0VGltZUlzTm93IQ==
