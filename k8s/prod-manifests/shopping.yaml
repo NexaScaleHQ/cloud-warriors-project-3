@@ -50,6 +50,8 @@ spec:
             secretKeyRef:
               name: shopping-secrets
               key: shopping-app-secret
+        - name: customer_url
+          value: "http://customer:8004"      
         resources:
           requests:
               cpu: 250m
