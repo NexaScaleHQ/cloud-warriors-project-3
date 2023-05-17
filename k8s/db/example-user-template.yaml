@@ -1,16 +1,16 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name:  ns-user-template # change to microservice name in yours (ns-##)
+  name:  ns-cloud-wariors # do not change
   labels:
-    name: ns-user-template-label # change to microservice label in yours
+    name: ns-cloud-wariors #do not change
 
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name:  user-template-mongo # change to microservice name in yours
-  namespace: ns-user-template # must be same as ns-user-template template
+  namespace: ns-cloud-wariors # must be same as ns-cloud-wariors template
   labels:
     name:  user-template-mongo #change
 spec:
@@ -47,7 +47,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name:  template-user-mongo-service
-  namespace: ns-user-template # namespace, same as ns-user-template created above
+  namespace: ns-cloud-wariors # namespace, same as ns-cloud-wariors created above
 spec:
   selector:
     name: user-template-mongo # user-template name

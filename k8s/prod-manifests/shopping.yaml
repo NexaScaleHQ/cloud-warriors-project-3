@@ -1,31 +1,36 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name:  ns-shopping
-  namespace: ns-shopping
+  name:  ns-cloud-wariors
+  namespace: ns-cloud-wariors
   labels:
-    name: ns-shopping
+    name: ns-cloud-wariors
 
 ---
 apiVersion: v1
 kind: Secret
 metadata:
   name: shopping-secrets
-  namespace: ns-shopping
+  namespace: ns-cloud-wariors
 type: Opaque
 data:
   shopping-app-secret: U2V0VGltZUlzTm93IQ==
 
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: shopping-configmap
+  namespace: ns-cloud-wariors
+data:
+  mongo_url: mongodb://customer-mongo-service/customer
 
 ---
-
-
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: shopping
-  namespace: ns-shopping
+  namespace: ns-cloud-wariors
 spec:
   replicas: 1
   selector:
@@ -50,8 +55,8 @@ spec:
             secretKeyRef:
               name: shopping-secrets
               key: shopping-app-secret
-        - name: customer_url
-          value: "http://customer:8004"      
+        - name: CUSTOMER_URI
+          value: "http://customer-service:8001"    
         resources:
           requests:
               cpu: 250m
@@ -68,14 +73,12 @@ spec:
           periodSeconds: 10
         ports:
         - containerPort: 8003
-
-
 ---
 kind: Service
 apiVersion: v1
 metadata:
   name:  shopping-service
-  namespace: ns-shopping
+  namespace: ns-cloud-wariors
 spec:
   selector:
     app:  shopping
