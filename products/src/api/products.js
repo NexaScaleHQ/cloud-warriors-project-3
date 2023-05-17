@@ -5,6 +5,10 @@ const UserAuth = require("./middlewares/auth");
 module.exports = (app) => {
   const service = new ProductService();
 
+  app.get("/health", (req, res) => {
+    res.status(200).json({ status: "UP" });
+  });
+
   app.post("/product/create", async (req, res, next) => {
     try {
       const { name, desc, type, unit, price, available, suplier, banner } =

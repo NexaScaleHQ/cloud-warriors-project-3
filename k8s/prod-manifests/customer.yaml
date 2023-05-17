@@ -1,17 +1,17 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name:  ns-customer
-  namespace: ns-customer
+  name:  ns-cloud-wariors
+  namespace: ns-cloud-wariors
   labels:
-    name: ns-customer
+    name: ns-cloud-wariors
 
 ---
 apiVersion: v1
 kind: Secret
 metadata:
   name: customer-secrets
-  namespace: ns-customer
+  namespace: ns-cloud-wariors
 type: Opaque
 data:
   customer-app-secret: Y2xvdWQtd2FycmlvcnM=
@@ -21,7 +21,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: customer-configmap
-  namespace: ns-customer
+  namespace: ns-cloud-wariors
 data:
   mongo_url: mongodb://customer-mongo-service/customer
 
@@ -30,7 +30,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: customer
-  namespace: ns-customer
+  namespace: ns-cloud-wariors
 spec:
   replicas: 1
   selector:
@@ -78,7 +78,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name:  customer-service
-  namespace: ns-customer
+  namespace: ns-cloud-wariors
 spec:
   selector:
     app:  customer
