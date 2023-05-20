@@ -66,5 +66,5 @@ metadata:
   namespace: ns-shopping
 type: Opaque
 data:
-  MONGODB_ROOT_USERNAME: R29kSXNHcmVhdDE=
-  MONGODB_ROOT_PASSWORD: U2V0VGltZUlzTm93IQ==
+  MONGODB_ROOT_USERNAME: Y2xvdWQtd2FycmlvcnM=
+  MONGODB_ROOT_PASSWORD: Y2xvdWQtd2FycmlvcnM=
