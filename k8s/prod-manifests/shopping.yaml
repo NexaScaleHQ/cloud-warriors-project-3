@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name:  ns-cloud-wariors
+  name: ns-cloud-wariors
   namespace: ns-cloud-wariors
   labels:
     name: ns-cloud-wariors
@@ -42,50 +42,50 @@ spec:
         app: shopping
     spec:
       containers:
-      - name: shopping
-        image: kingtoff/shopping:v1
-        env:
-        - name: MONGODB_URI
-          valueFrom:
-            configMapKeyRef:
-              name: shopping-configmap
-              key: mongo_url
-        - name: APP_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: shopping-secrets
-              key: shopping-app-secret
-        - name: CUSTOMER_URI
-          value: "http://customer-service:8001"    
-        resources:
-          requests:
+        - name: shopping
+          image: kingtoff/shopping:v1
+          env:
+            - name: MONGODB_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: shopping-configmap
+                  key: mongo_url
+            - name: APP_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: shopping-secrets
+                  key: shopping-app-secret
+            - name: CUSTOMER_URI
+              value: "http://customer-service:8001"
+          resources:
+            requests:
               cpu: 250m
               memory: 350Mi
-          limits:
-            memory: "700Mi"
-            cpu: "1100m"
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 8003
-            scheme: HTTP
-          initialDelaySeconds: 20
-          periodSeconds: 10
-        ports:
-        - containerPort: 8003
+            limits:
+              memory: "700Mi"
+              cpu: "1100m"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8003
+              scheme: HTTP
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          ports:
+            - containerPort: 8003
 ---
 kind: Service
 apiVersion: v1
 metadata:
-  name:  shopping-service
+  name: shopping-service
   namespace: ns-cloud-wariors
 spec:
   selector:
-    app:  shopping
+    app: shopping
   # type:  LoadBalancer
   ports:
-  - name:  shopping
-    port:  8003
-    targetPort:  8003
-    # nodePort: 30000
-    protocol:  TCP
+    - name: shopping
+      port: 8003
+      targetPort: 8003
+      # nodePort: 30000
+      protocol: TCP
