@@ -1,16 +1,16 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name:  ns-customer
+  name:  ns-cloud-wariors
   labels:
-    name: ns-customer
+    name: ns-cloud-wariors
 
 ---
 apiVersion: v1
 kind: Secret
 metadata:
   name: customer-mongo-secrets
-  namespace: ns-customer 
+  namespace: ns-cloud-wariors
 type: Opaque
 data:
   customer-mongo-root-username: Y2xvdWQtd2FycmlvcnM=
@@ -21,7 +21,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name:  customer-mongo
-  namespace: ns-customer 
+  namespace: ns-cloud-wariors 
   labels:
     name:  customer-mongo 
 spec:
@@ -59,7 +59,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name:  customer-mongo-service
-  namespace: ns-customer
+  namespace: ns-cloud-wariors
 spec:
   selector:
     name: customer-mongo
