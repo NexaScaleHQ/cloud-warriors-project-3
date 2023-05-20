@@ -1,11 +1,19 @@
- apiVersion: apps/v1
- kind: Deployment
- metadata: 
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ns-cloud-warriors
+  labels:
+    name: ns-cloud-warriors
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
     name: shopping-mongo
-    namespace: ns-shopping
+    namespace: ns-cloud-warriors
     labels:
       app: shopping-mongo
-  spec: 
+spec: 
     replicas: 1
     strategy:
       rollingUpdate:
@@ -40,7 +48,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: shopping-mongo-service
-  namespace: ns-shopping
+  namespace: ns-cloud-warriors
 spec:
   selector:
     app: shopping-mongo
@@ -51,19 +59,14 @@ spec:
      targetPort: 27017
 
 ---
-apiversion: v1
-kind: Namespace
-metadata:
-  name: ns-shopping
-  labels:
-    name: ns-shopping
+
 
 ---
 apiVersion: v1
 kind: Secret
 metadata:
   name: shopping-mongo-secret
-  namespace: ns-shopping
+  namespace: ns-cloud-warriors
 type: Opaque
 data:
   MONGODB_ROOT_USERNAME: Y2xvdWQtd2FycmlvcnM=
