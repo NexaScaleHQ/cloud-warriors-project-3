@@ -1,0 +1,93 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ns-cloud-wariors
+  namespace: ns-cloud-wariors
+  labels:
+    name: ns-cloud-wariors
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: products-secrets
+  namespace: ns-cloud-wariors
+type: Opaque
+data:
+  products-app-secret: Y2xvdWQtd2FycmlvcnM=
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: products-configmap
+  namespace: ns-cloud-wariors
+data:
+  mongo_url: mongodb://products-mongo-service/products
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: products
+  namespace: ns-cloud-wariors
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: products
+  template:
+    metadata:
+      labels:
+        app: products
+    spec:
+      containers:
+        - name: products
+          image: caesarsage/products:v3
+          env:
+            - name: MONGODB_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: products-configmap
+                  key: mongo_url
+            - name: APP_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: products-secrets
+                  key: products-app-secret
+            - name: CUSTOMER_URI
+              value: "http://customer-service:8001"
+            - name: SHOPPING_URI
+              value: "http://shopping-service:8001"
+          resources:
+            requests:
+              cpu: 250m
+              memory: 350Mi
+            limits:
+              memory: "700Mi"
+              cpu: "1100m"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8001
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          ports:
+            - containerPort: 8001
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: products-service
+  namespace: ns-cloud-wariors
+spec:
+  selector:
+    app: products
+  # type:  LoadBalancer
+  ports:
+    - name: products
+      port: 8001
+      targetPort: 8001
+      # nodePort: 30000
+      protocol: TCP
