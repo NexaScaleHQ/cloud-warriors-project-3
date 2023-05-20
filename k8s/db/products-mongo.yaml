@@ -9,7 +9,7 @@ metadata:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: product-mongo-secrets
+  name: products-mongo-secrets
   namespace: ns-cloud-wariors
 type: Opaque
 data:
@@ -20,10 +20,10 @@ data:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name:  product-mongo
+  name:  products-mongo
   namespace: ns-cloud-wariors 
   labels:
-    name:  product-mongo 
+    name:  products-mongo 
 spec:
   replicas: 1
   strategy:
@@ -33,15 +33,15 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      name: product-mongo 
+      name: products-mongo 
   template:
     metadata:
       labels:
-        name:  product-mongo
+        name:  products-mongo
     spec:
       containers:
       - image:  mongo 
-        name:  product-mongo
+        name:  products-mongo
         imagePullPolicy: Always
         resources:
           requests:
@@ -52,7 +52,7 @@ spec:
             memory: "2500M"    
         ports:
         - containerPort:  27017
-          name:  product-mongo
+          name:  products-mongo
 
 ---
 kind: Service
@@ -64,7 +64,7 @@ spec:
   selector:
     name: products-mongo
   ports:
-  - name:  product-mongo
+  - name:  products-mongo
     protocol: TCP
     port:  27017
     targetPort:  27017
