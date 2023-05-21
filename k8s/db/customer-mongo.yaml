@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name:  ns-cloud-wariors
+  name: ns-cloud-wariors
   labels:
     name: ns-cloud-wariors
 
@@ -15,15 +15,15 @@ type: Opaque
 data:
   customer-mongo-root-username: Y2xvdWQtd2FycmlvcnM=
   customer-mongo-root-password: Y2xvdWQtd2FycmlvcnM=
-    
+
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name:  customer-mongo
-  namespace: ns-cloud-wariors 
+  name: customer-mongo
+  namespace: ns-cloud-wariors
   labels:
-    name:  customer-mongo 
+    name: customer-mongo
 spec:
   replicas: 1
   strategy:
@@ -33,38 +33,38 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      name: customer-mongo 
+      name: customer-mongo
   template:
     metadata:
       labels:
-        name:  customer-mongo
+        name: customer-mongo
     spec:
       containers:
-      - image:  mongo 
-        name:  customer-mongo
-        imagePullPolicy: Always
-        resources:
-          requests:
-            cpu: "250m"
-            memory: "250Mi"
-          limits:
-            cpu: "1500m"
-            memory: "2500M"    
-        ports:
-        - containerPort:  27017
-          name:  customer-mongo
+        - image: mongo
+          name: customer-mongo
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "250Mi"
+            limits:
+              cpu: "1500m"
+              memory: "2500M"
+          ports:
+            - containerPort: 27017
+              name: customer-mongo
 
 ---
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
-  name:  customer-mongo-service
+  name: customer-mongo-service
   namespace: ns-cloud-wariors
 spec:
   selector:
     name: customer-mongo
   ports:
-  - name:  customer-mongo
-    protocol: TCP
-    port:  27017
-    targetPort:  27017
+    - name: customer-mongo
+      protocol: TCP
+      port: 27017
+      targetPort: 27017

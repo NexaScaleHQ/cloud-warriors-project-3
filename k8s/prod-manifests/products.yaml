@@ -43,7 +43,7 @@ spec:
     spec:
       containers:
         - name: products
-          image: caesarsage/products:v3
+          image: caesarsage/products:v1
           env:
             - name: MONGODB_URI
               valueFrom:

@@ -23,7 +23,7 @@ metadata:
   name: shopping-configmap
   namespace: ns-cloud-wariors
 data:
-  mongo_url: mongodb://customer-mongo-service/customer
+  mongo_url: mongodb://shopping-mongo-service/shooping
 
 ---
 apiVersion: apps/v1
