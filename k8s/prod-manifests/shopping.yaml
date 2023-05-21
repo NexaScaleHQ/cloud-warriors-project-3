@@ -14,7 +14,7 @@ metadata:
   namespace: ns-cloud-wariors
 type: Opaque
 data:
-  shopping-app-secret: U2V0VGltZUlzTm93IQ==
+  shopping-app-secret: Y2xvdWQtd2FycmlvcnM=
 
 ---
 apiVersion: v1

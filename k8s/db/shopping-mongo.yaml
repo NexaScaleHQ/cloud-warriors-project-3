@@ -18,7 +18,7 @@ data:
 
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: Deploymen
 metadata:
   name: shopping-mongo
   namespace: ns-cloud-wariors
@@ -59,12 +59,12 @@ apiVersion: v1
 kind: Service
 metadata:
   name: shopping-mongo-service
-  namespace: ns-cloud-wariors
+  namespace: ns-cloud-warriors
 spec:
   selector:
     app: shopping-mongo
   type: ClusterIP
   ports:
-    - name: shopping-mongo
-      port: 27017
-      targetPort: 27017
+   - name: shopping-mongo
+     port: 27017
+     targetPort: 27017
