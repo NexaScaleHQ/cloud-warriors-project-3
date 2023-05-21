@@ -18,7 +18,7 @@ data:
 
 ---
 apiVersion: apps/v1
-kind: Deploymen
+kind: Deployment
 metadata:
   name: shopping-mongo
   namespace: ns-cloud-wariors
@@ -40,19 +40,19 @@ spec:
         apps: shopping-mongo
     spec:
       containers:
-      - name: shopping-mongo
-        image: mongo
-        imagePullPolicy: Always
-        resources:
-          requests:
-            cpu: "250m"
-            memory: "250Mi"
-          limits:
-            cpu: "1500m"
-            memory: "2500M"
-        ports:
-          - containerPort: 27017
-            name: shopping-mongo
+        - name: shopping-mongo
+          image: mongo
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "250Mi"
+            limits:
+              cpu: "1500m"
+              memory: "2500M"
+          ports:
+            - containerPort: 27017
+              name: shopping-mongo
 
 ---
 apiVersion: v1
@@ -65,6 +65,6 @@ spec:
     app: shopping-mongo
   type: ClusterIP
   ports:
-   - name: shopping-mongo
-     port: 27017
-     targetPort: 27017
+    - name: shopping-mongo
+      port: 27017
+      targetPort: 27017
