@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ns-cloud-wariors
+  labels:
+    name: ns-cloud-wariors
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: gateway-ingress
+  namespace: ns-cloud-wariors
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+spec:
+  rules:
+    http:
+      paths:
+      - path: /products
+        backend:
+          service:
+            name: product-service
+            port:
+              number: 8003
+        pathType: Prefix
+      - path: /shopping
+        backend:
+          service:
+            name: shopping-service
+            port:
+              number: 8002
+        pathType: Prefix
+      - path: /customer
+        backend:
+          service:
+            name: customer-service
+            port:
+              number: 8001
+        pathType: Prefix
