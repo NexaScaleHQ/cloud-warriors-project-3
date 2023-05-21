@@ -1,36 +1,47 @@
-apiVersion: v1
+apiversion: v1
 kind: Namespace
 metadata:
-  name: ns-cloud-warriors
+  name: ns-cloud-wariors
   labels:
-    name: ns-cloud-warriors
+    name: ns-cloud-wariors
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: shopping-mongo-secret
+  namespace: ns-cloud-wariors
+type: Opaque
+data:
+  MONGODB_ROOT_USERNAME: R29kSXNHcmVhdDE=
+  MONGODB_ROOT_PASSWORD: U2V0VGltZUlzTm93IQ==
 
 ---
 apiVersion: apps/v1
-kind: Deployment
-metadata: 
-    name: shopping-mongo
-    namespace: ns-cloud-warriors
-    labels:
+kind: Deploymen
+metadata:
+  name: shopping-mongo
+  namespace: ns-cloud-wariors
+  labels:
+    app: shopping-mongo
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  selector:
+    matchLabels:
       app: shopping-mongo
-spec: 
-    replicas: 1
-    strategy:
-      rollingUpdate:
-       maxSurge: 1
-       maxUnavailable: 1
-      type: RollingUpdate
-    selector:
-     matchLabels:
-       app: shopping-mongo
-    template:
-      metadata:
-       labels: shopping
-         apps:
-      spec:
-       containers:
+  template:
+    metadata:
+      labels:
+        apps: shopping-mongo
+    spec:
+      containers:
       - name: shopping-mongo
-        image: mongo     
+        image: mongo
         imagePullPolicy: Always
         resources:
           requests:
@@ -40,8 +51,8 @@ spec:
             cpu: "1500m"
             memory: "2500M"
         ports:
-        - containerPort: 27017
-          name: shopping-mongo
+          - containerPort: 27017
+            name: shopping-mongo
 
 ---
 apiVersion: v1
@@ -57,17 +68,3 @@ spec:
    - name: shopping-mongo
      port: 27017
      targetPort: 27017
-
----
-
-
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: shopping-mongo-secret
-  namespace: ns-cloud-warriors
-type: Opaque
-data:
-  MONGODB_ROOT_USERNAME: Y2xvdWQtd2FycmlvcnM=
-  MONGODB_ROOT_PASSWORD: Y2xvdWQtd2FycmlvcnM=

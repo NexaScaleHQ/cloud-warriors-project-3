@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name:  ns-cloud-wariors
+  labels:
+    name: ns-cloud-wariors
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: products-mongo-secrets
+  namespace: ns-cloud-wariors
+type: Opaque
+data:
+  product-mongo-root-username: Y2xvdWQtd2FycmlvcnM=
+  product-mongo-root-password: Y2xvdWQtd2FycmlvcnM=
+    
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  products-mongo
+  namespace: ns-cloud-wariors 
+  labels:
+    name:  products-mongo 
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      name: products-mongo 
+  template:
+    metadata:
+      labels:
+        name:  products-mongo
+    spec:
+      containers:
+      - image:  mongo 
+        name:  products-mongo
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "250Mi"
+          limits:
+            cpu: "1500m"
+            memory: "2500M"    
+        ports:
+        - containerPort:  27017
+          name:  products-mongo
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name:  products-mongo-service
+  namespace: ns-cloud-wariors
+spec:
+  selector:
+    name: products-mongo
+  ports:
+  - name:  products-mongo
+    protocol: TCP
+    port:  27017
+    targetPort:  27017
